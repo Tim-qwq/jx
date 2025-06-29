@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向华捐献</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36D399',
+                        neutral: '#F9FAFB',
+                    },
+                    fontFamily: {
+                        inter: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .btn-primary {
+                @apply bg-primary hover:bg-primary/90 text-white font-medium py-4 px-8 rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-primary/50;
+            }
+            .payment-method {
+                @apply flex items-center justify-center space-x-4 py-4 px-6 rounded-xl border-2 border-transparent hover:border-primary/30 transition-all duration-300 cursor-pointer;
+            }
+            .payment-method.active {
+                @apply border-primary bg-primary/5;
+            }
+            .payment-method.disabled {
+                @apply opacity-50 cursor-not-allowed pointer-events-none;
+            }
+            .modal-backdrop {
+                @apply fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300;
+            }
+            .modal-backdrop.active {
+                @apply opacity-100 pointer-events-auto;
+            }
+            .modal-content {
+                @apply bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 transform transition-all duration-500 scale-95 opacity-0;
+            }
+            .modal-backdrop.active .modal-content {
+                @apply scale-100 opacity-100;
+            }
+            .highlight-text {
+                @apply bg-yellow-100 text-yellow-800 px-2 py-1 rounded-md font-medium;
+            }
+        }
+    </style>
+</head>
+<body class="font-inter bg-gradient-to-br from-neutral to-white min-h-screen flex flex-col items-center justify-center p-4">
+    <!-- 主容器 -->
+    <div class="max-w-4xl w-full mx-auto text-center">
+        <!-- 标题 -->
+        <h1 class="text-[clamp(2.5rem,5vw,4rem)] font-bold text-gray-800 mb-8 tracking-tight">
+            向华<span class="text-primary">捐献</span>
+        </h1>
+        
+        <!-- 描述 -->
+        <p class="text-[clamp(1rem,2vw,1.25rem)] text-gray-600 mb-4 max-w-2xl mx-auto leading-relaxed">
+            您的每一份爱心，都将化作希望的力量，帮助更多人走向美好未来。
+        </p>
+        
+        <!-- 新增的会员奖励信息 -->
+        <p class="text-[clamp(1rem,2vw,1.25rem)] text-yellow-700 mb-12 max-w-2xl mx-auto leading-relaxed font-medium">
+            <i class="fa fa-star mr-2"></i>捐献达到<span class="highlight-text">￥100</span>可获得终身向华黑金会员，永久有效
+        </p>
+        
+        <!-- 捐献按钮 -->
+        <button id="donateBtn" class="btn-primary text-xl">
+            <i class="fa fa-heart mr-2"></i> 立即捐献
+        </button>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="mt-auto pt-8 pb-4 text-center text-gray-500 text-sm">
+        <p>© 2025 向华捐献 版权所有</p>
+    </footer>
+    
+    <!-- 支付方式选择弹窗 -->
+    <div id="paymentModal" class="modal-backdrop">
+        <div class="modal-content overflow-hidden">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">选择支付方式</h2>
+                
+                <div class="space-y-4">
+                    <div id="alipayMethod" class="payment-method disabled">
+                        <i class="fa fa-credit-card text-gray-400 text-2xl"></i>
+                        <span class="text-lg font-medium text-gray-400">支付宝</span>
+                        <span class="ml-auto text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">维护中</span>
+                    </div>
+                    
+                    <div id="wechatMethod" class="payment-method">
+                        <i class="fa fa-wechat text-green-500 text-2xl"></i>
+                        <span class="text-lg font-medium">微信支付</span>
+                    </div>
+                </div>
+                
+                <div class="mt-8">
+                    <button id="confirmPayment" class="w-full btn-primary py-3">
+                        确认支付
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 支付二维码弹窗 -->
+    <div id="qrcodeModal" class="modal-backdrop">
+        <div class="modal-content overflow-hidden">
+            <div class="p-6 text-center">
+                <button id="closeQrcode" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+                
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">请使用<span id="paymentType">微信</span>扫码支付</h2>
+                
+                <div class="my-6 bg-white p-4 inline-block rounded-xl shadow-lg">
+                    <img id="qrcodeImage" src="_20250629160425.jpg" alt="微信支付二维码" class="w-64 h-64 object-cover rounded-lg">
+                </div>
+                
+                <p class="text-gray-600 mb-6">感谢您的爱心捐助！</p>
+                
+                <button id="doneButton" class="btn-primary py-3">
+                    已完成支付
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取DOM元素
+        const donateBtn = document.getElementById('donateBtn');
+        const paymentModal = document.getElementById('paymentModal');
+        const qrcodeModal = document.getElementById('qrcodeModal');
+        const alipayMethod = document.getElementById('alipayMethod');
+        const wechatMethod = document.getElementById('wechatMethod');
+        const confirmPayment = document.getElementById('confirmPayment');
+        const closeQrcode = document.getElementById('closeQrcode');
+        const doneButton = document.getElementById('doneButton');
+        const paymentType = document.getElementById('paymentType');
+        const qrcodeImage = document.getElementById('qrcodeImage');
+        
+        let selectedPaymentMethod = null;
+        
+        // 打开支付方式选择弹窗
+        donateBtn.addEventListener('click', () => {
+            paymentModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        // 选择支付方式
+        wechatMethod.addEventListener('click', () => {
+            selectPaymentMethod('wechat', '_20250629160425.jpg', '微信');
+        });
+        
+        // 确认支付
+        confirmPayment.addEventListener('click', () => {
+            if (selectedPaymentMethod) {
+                paymentModal.classList.remove('active');
+                setTimeout(() => {
+                    qrcodeModal.classList.add('active');
+                }, 300);
+            } else {
+                alert('请选择一种支付方式');
+            }
+        });
+        
+        // 关闭二维码弹窗
+        closeQrcode.addEventListener('click', closeQrcodeModal);
+        doneButton.addEventListener('click', closeQrcodeModal);
+        
+        // 辅助函数：选择支付方式
+        function selectPaymentMethod(method, imageUrl, displayName) {
+            // 移除之前选择的支付方式的激活状态
+            alipayMethod.classList.remove('active');
+            wechatMethod.classList.remove('active');
+            
+            // 添加当前选择的支付方式的激活状态
+            if (method === 'wechat') {
+                wechatMethod.classList.add('active');
+            }
+            
+            // 保存选择的支付方式
+            selectedPaymentMethod = method;
+            
+            // 更新二维码图片和支付类型显示
+            qrcodeImage.src = imageUrl;
+            paymentType.textContent = displayName;
+        }
+        
+        // 辅助函数：关闭二维码弹窗
+        function closeQrcodeModal() {
+            qrcodeModal.classList.remove('active');
+            document.body.style.overflow = '';
+            // 重置支付方式选择
+            selectedPaymentMethod = null;
+            alipayMethod.classList.remove('active');
+            wechatMethod.classList.remove('active');
+        }
+        
+        // 点击弹窗外部关闭弹窗
+        paymentModal.addEventListener('click', (e) => {
+            if (e.target === paymentModal) {
+                closeQrcodeModal();
+            }
+        });
+        
+        qrcodeModal.addEventListener('click', (e) => {
+            if (e.target === qrcodeModal) {
+                closeQrcodeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+    
