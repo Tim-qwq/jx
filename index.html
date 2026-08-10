@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>向华社区 RP 地图工程 - 捐赠支持</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1677ff',
+                        success: '#07c160',
+                        alipay: '#1677ff',
+                        wechat: '#07c160'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .card-shadow {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            }
+            .btn-hover {
+                transition: all 0.25s ease;
+            }
+            .btn-hover:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+            }
+            /* 转圈加载动画 */
+            .spin-circle {
+                width: 48px;
+                height: 48px;
+                border:4px solid #e5e7eb;
+                border-top-color:#1677ff;
+                border-radius: 50%;
+                animation: spin 0.8s linear infinite;
+            }
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 min-h-screen">
+    <!-- 顶部简洁导航 -->
+    <header class="bg-white border-b border-gray-200">
+        <div class="container mx-auto px-4 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="fa fa-map-marker text-primary text-3xl"></i>
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold text-gray-900">向华社区 RP 地图工程</h1>
+                    <p class="text-sm text-gray-500">Roblox / 罗布乐思社区项目捐赠页面</p>
+                </div>
+            </div>
+            <span class="hidden md:inline-block px-3 py-1 bg-blue-50 text-primary rounded-full text-sm">社区支持</span>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-10">
+        <!-- 主介绍区域 -->
+        <section class="max-w-3xl mx-auto text-center mb-10">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-3">支持向华社区 RP 地图工程</h2>
+            <p class="text-gray-500 md:text-lg">
+                每一笔捐赠都将用于地图资源、模型素材、服务器维护与项目持续更新。
+            </p>
+        </section>
+
+        <!-- 项目说明卡片 -->
+        <section class="max-w-3xl mx-auto mb-10">
+            <div class="bg-white rounded-2xl p-6 md:p-8 border border-gray-100 card-shadow">
+                <h3 class="text-lg font-semibold mb-3 flex items-center gap-2">
+                    <i class="fa fa-info-circle text-primary"></i>项目说明
+                </h3>
+                <p class="text-gray-600 leading-relaxed mb-4">
+                    向华社区 RP 地图是一个由社区爱好者共同维护的角色扮演地图项目。我们希望通过持续更新内容、优化体验和扩展玩法，让更多玩家参与到社区共建中。
+                </p>
+                <p class="text-gray-500 text-sm">
+                    捐赠为自愿赞助行为，不包含游戏道具、权限或服务承诺。
+                </p>
+
+                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-50 rounded-xl p-4 text-center">
+                        <div class="text-xl font-bold text-primary">RP 地图</div>
+                        <div class="text-xs text-gray-500">罗布乐思社区项目</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4 text-center">
+                        <div class="text-xl font-bold text-primary">社区共建</div>
+                        <div class="text-xs text-gray-500">爱好者共同维护</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-xl p-4 text-center">
+                        <div class="text-xl font-bold text-primary">自愿支持</div>
+                        <div class="text-xs text-gray-500">无强制付费</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 捐赠渠道选择 -->
+        <section class="max-w-xl mx-auto">
+            <h3 class="text-xl font-bold text-center mb-6">选择捐赠渠道</h3>
+            <div class="grid md:grid-cols-2 gap-5">
+                <!-- 微信支付 -->
+                <button id="btnWechat" class="bg-white rounded-2xl p-6 border border-gray-200 text-center btn-hover">
+                    <div class="w-14 h-14 bg-wechat rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-wechat text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900">微信支付</h4>
+                    <p class="text-sm text-gray-500 mt-1">使用微信扫码捐赠</p>
+                </button>
+
+                <!-- 支付宝支付 -->
+                <button id="btnAlipay" class="bg-white rounded-2xl p-6 border border-gray-200 text-center btn-hover">
+                    <div class="w-14 h-14 bg-alipay rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fa fa-credit-card text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-lg font-semibold text-gray-900">支付宝支付</h4>
+                    <p class="text-sm text-gray-500 mt-1">使用支付宝扫码捐赠</p>
+                </button>
+            </div>
+        </section>
+
+        <!-- 注意事项 -->
+        <section class="max-w-3xl mx-auto mt-10">
+            <div class="bg-amber-50 border border-amber-200 rounded-xl p-5">
+                <h4 class="font-semibold text-amber-800 mb-2 flex items-center gap-2">
+                    <i class="fa fa-exclamation-triangle"></i>捐赠注意事项
+                </h4>
+                <ul class="text-amber-700 text-sm space-y-1 list-disc pl-5">
+                    <li>捐赠属于自愿赞助，不是购买游戏道具或服务。</li>
+                    <li>建议在转账备注中填写你的 Roblox 用户名，方便记录支持。</li>
+                    <li>如扫码失败，请保存二维码图片后在微信或支付宝相册中打开扫码。</li>
+                    <li>所有资金将用于向华社区 RP 地图的开发与维护。</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- 底部 -->
+    <footer class="mt-16 border-t border-gray-200 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+            <p>© 2026 向华社区 RP 地图工程 | Roblox 罗布乐思社区项目</p>
+            <p class="mt-1">本页面仅用于社区项目赞助，与 Roblox 官方无关</p>
+        </div>
+    </footer>
+
+    <!-- 弹窗：选择支付方式 -->
+    <div id="modalSelectPay" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl border border-gray-200 p-6 card-shadow">
+            <div class="flex justify-between items-center mb-5">
+                <h3 id="modalPayTitle" class="text-xl font-bold text-gray-900">选择支付方式</h3>
+                <button id="closeModalSelect" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div class="space-y-4">
+                <button id="btnScanPay" class="w-full py-4 rounded-xl border-2 border-primary text-left px-5 hover:bg-blue-50 transition">
+                    <div class="font-semibold text-primary">扫码支付</div>
+                    <div class="text-gray-500 text-sm">保存二维码，使用对应 App 扫码捐赠</div>
+                </button>
+                <button class="w-full py-4 rounded-xl border-2 border-gray-300 text-left px-5 opacity-50 cursor-not-allowed" disabled>
+                    <div class="font-semibold text-gray-400">跳转支付</div>
+                    <div class="text-gray-400 text-sm">接口暂未开放，暂时不可使用</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 弹窗：二维码（包含loading转圈） -->
+    <div id="modalQrcode" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-2xl border border-gray-200 p-6 text-center card-shadow">
+            <div class="flex justify-between items-center mb-5">
+                <h3 id="qrcodeTitle" class="text-xl font-bold text-gray-900">微信扫码捐赠</h3>
+                <button id="closeModalQr" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+
+            <!-- 加载转圈 -->
+            <div id="loadingSpinner" class="py-10 flex justify-center">
+                <div class="spin-circle"></div>
+            </div>
+
+            <!-- 二维码容器，初始隐藏 -->
+            <div id="qrWrap" class="hidden">
+                <div class="bg-gray-50 p-4 rounded-xl inline-block border border-gray-100">
+                    <img id="payQrImg" src="" alt="收款二维码" class="w-[220px] h-[220px] object-contain">
+                </div>
+                <p class="mt-4 text-gray-500 text-sm">保存图片，打开对应 App 相册扫码进行捐赠</p>
+                <p class="text-gray-400 text-xs mt-2">建议备注你的 Roblox 用户名</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const qrSources = {
+            wechat: "xh1.jpg",
+            alipay: "xh2.jpg"
+        };
+
+        let currentChannel = "";
+
+        const modalSelectPay = document.getElementById("modalSelectPay");
+        const modalQrcode = document.getElementById("modalQrcode");
+        const modalPayTitle = document.getElementById("modalPayTitle");
+        const qrcodeTitle = document.getElementById("qrcodeTitle");
+        const payQrImg = document.getElementById("payQrImg");
+        const loadingSpinner = document.getElementById("loadingSpinner");
+        const qrWrap = document.getElementById("qrWrap");
+
+        document.getElementById("btnWechat").onclick = function () {
+            currentChannel = "wechat";
+            modalPayTitle.innerText = "微信 - 选择支付模式";
+            modalSelectPay.classList.remove("hidden");
+        };
+
+        document.getElementById("btnAlipay").onclick = function () {
+            currentChannel = "alipay";
+            modalPayTitle.innerText = "支付宝 - 选择支付模式";
+            modalSelectPay.classList.remove("hidden");
+        };
+
+        document.getElementById("closeModalSelect").onclick = function () {
+            modalSelectPay.classList.add("hidden");
+        };
+
+        document.getElementById("btnScanPay").onclick = function () {
+            modalSelectPay.classList.add("hidden");
+            // 打开二维码弹窗，先显示转圈，隐藏二维码
+            modalQrcode.classList.remove("hidden");
+            loadingSpinner.classList.remove("hidden");
+            qrWrap.classList.add("hidden");
+
+            if (currentChannel === "wechat") {
+                qrcodeTitle.innerText = "微信扫码捐赠";
+                payQrImg.src = qrSources.wechat;
+            } else {
+                qrcodeTitle.innerText = "支付宝扫码捐赠";
+                payQrImg.src = qrSources.alipay;
+            }
+
+            // 随机 2000‑3000ms
+            const delay = Math.floor(Math.random() * 1001) + 2000;
+            setTimeout(()=>{
+                loadingSpinner.classList.add("hidden");
+                qrWrap.classList.remove("hidden");
+            }, delay);
+        };
+
+        document.getElementById("closeModalQr").onclick = function () {
+            modalQrcode.classList.add("hidden");
+        };
+
+        modalSelectPay.onclick = function (e) {
+            if (e.target === modalSelectPay) modalSelectPay.classList.add("hidden");
+        };
+
+        modalQrcode.onclick = function (e) {
+            if (e.target === modalQrcode) modalQrcode.classList.add("hidden");
+        };
+    </script>
+</body>
+</html>
